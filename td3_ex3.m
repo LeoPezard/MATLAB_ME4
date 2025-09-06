@@ -1,38 +1,27 @@
-clear all
+clear
 close all
 clc
 
-% Définitions des différents paramètres (différents deltas)
-cases = [0.1; 1; 2];
+val_delta = [0.1 ; 1; 2];
 w0 = 1;
-
-% Temps échantillonné
-tspan = linspace(0,50,100);
-
-% Conditions initiales
-z0 = [1; 0]; % y(0) = 1, dy/dt(0) = 0
+initial_conditions = [1; 0]
+tspan = linspace(0,30,750);
 
 figure;
 hold on;
-
-% calcul pour chaque cas (différents deltas)
-for i = 1:length(cases)
-    delta = cases(i);
-
-    % Define the ODE as an anonymous function
-    odefun = @(t, y) [y(2); -2*delta*y(2) - w0^2*y(1)];
-
-    % Solve the ODE using ode23
-    [t, Y] = ode23(odefun, tspan, z0);
-
-    % Plot the results
+for i = 1:length(val_delta)
+    %différent delta à chaque itération
+    delta = val_delta(i);
+    % transformation du système
+    % y(t) = y(1) et dy/dt = y(2) (vecteur y
+    % dy(1)/dt = y(2) et dy(2)/dt = d²y(t)/dt = -w0²*y(1) - 2*delta*y(2)
+    odefun = @(t,y)[y(2); -2*delta*y(2) - w0^2*y(1)];
+    [Time, w_sol] = ode23(odefun, tspan, initial_conditions);
     
-    plot(t, Y(:, 1),'DisplayName',['Solution for \delta = ' num2str(delta)]);
-    xlabel('Time t');
+    plot(Time, w_sol(:,1), 'DisplayName', ['Reponse pour \delta = ' num2str(delta)])
+    title('Réponse pour différents delta');
+    xlabel('Temps');
     ylabel('y(t)');
-    legend show;
     grid on;
 end
-title(['Solution Y']);
-hold off;
-
+legend show;
