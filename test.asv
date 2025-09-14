@@ -3,10 +3,20 @@ close all
 clc
 
 L = 0.5;
-m=0;
+l = 0.03;
+e = 0.001;
+
+Tinf = 29;
+T0 = 53;
+
 
 tspan = linspace(0,1000,6);
-xspan = linspace(0,0.5,40);
+xspan = linspace(0,L,40);
+
+h = 62;
+k = 390;
+S = l*e;
+P = 2*l+2*e;
 
 
 pdexlic = @(x)[200];
