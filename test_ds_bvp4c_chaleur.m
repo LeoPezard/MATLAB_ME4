@@ -29,7 +29,12 @@ bcfun = @(Ta,Tb) [Ta(1)-T0;Tb(2)];
 sol = bvp4c(odefun,bcfun,sol_init);
 
 figure;
-plot(sol.x, sol.y(1,:), 'b-*');
+plot(sol.x, sol.y(1,:)-Tair, 'b-*');
 xlabel('x (m)');
 ylabel('T (°C)');
 grid on;
+
+X=sol.y(1,:);
+Y=h*P*(X-Tair);
+Q = trapz(sol.x,Y); % M�thode des trap�zes
+display(Q);
